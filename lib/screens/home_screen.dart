@@ -11,103 +11,134 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      child: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'San Francisco',
-                    style: kCityNameTextStyle,
-                  ),
-                  Text('Sep 9, 2021', style: kDate),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Expanded(
-                child: ToggleSwitch(
-                  totalSwitches: 2,
-                  minWidth: 110,
-                  labels: ['Focecast', 'Air quality'],
-                  activeBgColor: [Colors.blue],
-                  inactiveBgColor: Colors.black12,
-                  activeFgColor: Colors.white,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        constraints: BoxConstraints.expand(),
+        child: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Sep 9, 2021'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'San Francisco',
+                          style: kCityNameTextStyle,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Expanded(
+                  child: ToggleSwitch(
+                    totalSwitches: 2,
+                    minWidth: 110,
+                    labels: ['Focecast', 'Air quality'],
+                    activeBgColor: [Colors.orange],
+                    inactiveBgColor: Colors.black12,
+                    activeFgColor: Colors.white,
+                  ),
+                ),
+              ),
+              Expanded(
                 child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: Icon(
-                    Icons.wb_sunny,
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    'Cloudy',
+                    style: TextStyle(fontSize: 50),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        'Temp',
-                        style: kDate,
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        '75',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Wind',
-                        style: kDate,
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        '75',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Humidity',
-                        style: kDate,
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        '75',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
+              Expanded(
+                flex: 5,
                 child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                decoration: kTextFieldInputDecoration,
+                  padding: const EdgeInsets.all(15.0),
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Icon(
+                      Icons.wb_sunny,
+                    ),
+                  ),
+                ),
               ),
-            ))
-          ],
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          'Temp',
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          '75',
+                          style: TextStyle(fontSize: 25),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Wind',
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          '75',
+                          style: TextStyle(fontSize: 25),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Humidity',
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          '75',
+                          style: TextStyle(fontSize: 25),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 25.0,
+                      ),
+                      Text(
+                        ' Search',
+                        style: TextStyle(color: Colors.white, fontSize: 25),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }
