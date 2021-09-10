@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const kCityNameTextStyle = TextStyle(fontSize: 30.0);
+const kLabelTextStyle = TextStyle(fontSize: 30.0, color: Colors.white);
 
 const kTextFieldInputDecoration = InputDecoration(
   filled: true,
