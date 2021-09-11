@@ -14,4 +14,28 @@ class WeatherModel {
     var weatherData = await networkHelper.getData();
     return weatherData;
   }
+
+  Future<dynamic> getCityWeather(cityName) async {
+    NetworkHelper networkHelper = NetworkHelper(
+        '$openWeatherMapURL?q=$cityName&units=metric&appid=$apiKey');
+
+    var weatherData = await networkHelper.getData();
+    return weatherData;
+  }
+
+  String getWeatherIcon(int conditionCode) {
+    if (conditionCode < 300) {
+      return 'thunderstorm';
+    } else if (conditionCode < 400) {
+      return 'drizzle';
+    } else if (conditionCode < 600) {
+      return 'rain';
+    } else if (conditionCode < 700) {
+      return 'snowy';
+    } else if (conditionCode == 800) {
+      return 'clear';
+    } else {
+      return 'cloudy';
+    }
+  }
 }

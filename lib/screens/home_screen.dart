@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/constants.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:weather_app/screens/city_screen.dart';
+import 'package:weather_app/services/networking.dart';
+import 'package:weather_app/services/weather.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen(this.locationWeather);
@@ -10,24 +13,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String cityName = '';
+  String main = '';
+  String iconPath = '';
+  int temperature = 0;
+  double windSpeed = 0.0;
+  int humidity = 0;
+  String currentDate = '0';
   @override
   void initState() {
     super.initState();
     updateUI(widget.locationWeather);
   }
 
-  void updateUI(dynamic weatherData) {}
+  void updateUI(dynamic weatherData) {
+    setState(() {
+      var now = new DateTime.now();
+      currentDate = '${now.day}-${now.month}-${now.year}';
+      print(currentDate);
+      cityName = weatherData['name'];
+      main = weatherData['weather'][0]['main'];
+      iconPath = 'images/' + main.toLowerCase() + '.png';
+      double temp = weatherData['main']['temp'];
+      temperature = temp.toInt();
+      windSpeed = weatherData['wind']['speed'];
+      humidity = weatherData['main']['humidity'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/background.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
+        decoration: kBackgroundBoxDecoration,
         constraints: BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
@@ -36,27 +54,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Sep 9, 2021'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'San Francisco',
-                          style: kLabelTextStyle,
-                        ),
-                      ],
+                    Text(
+                      cityName,
+                      style: kLabelTextStyle,
                     ),
+                    Text(currentDate),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Expanded(
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
                   child: ToggleSwitch(
                     totalSwitches: 2,
                     minWidth: 110,
                     labels: ['Focecast', 'Air quality'],
-                    activeBgColor: [Colors.orange],
+                    activeBgColor: [Colors.purple],
                     inactiveBgColor: Colors.black12,
                     activeFgColor: Colors.white,
                   ),
@@ -66,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'Cloudy',
+                    main,
                     style: TextStyle(fontSize: 50),
                   ),
                 ),
@@ -74,12 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 flex: 5,
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: Icon(
-                      Icons.wb_sunny,
-                    ),
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image(
+                    image: AssetImage(iconPath),
                   ),
                 ),
               ),
@@ -94,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          '75',
+                          temperature.toString() + '℃',
                           style: kLabelTextStyle,
                         )
                       ],
@@ -106,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          '75',
+                          windSpeed.toString() + 'km/h',
                           style: kLabelTextStyle,
                         )
                       ],
@@ -118,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(height: 5),
                         Text(
-                          '75',
+                          humidity.toString() + '%',
                           style: kLabelTextStyle,
                         )
                       ],
@@ -128,7 +138,23 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Expanded(
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    var typedName = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return CityScreen();
+                        },
+                      ),
+                    );
+                    if (typedName != null) {
+                      cityName = typedName;
+                      WeatherModel weatherModel = WeatherModel();
+                      var weatherData =
+                          await weatherModel.getCityWeather(cityName);
+                      updateUI(weatherData);
+                    }
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
